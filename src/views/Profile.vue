@@ -1,0 +1,28 @@
+<template>
+  <div class="form">
+    <p>{{user.email}}</p>
+    <b-button @click="logOut()">Log Out</b-button>
+  </div>
+</template>
+
+<script>
+import * as firebase from "firebase/app";
+import "firebase/auth";
+import { mapGetters } from 'vuex';
+
+export default {
+  computed: {
+    ...mapGetters(["user"]),
+  },
+  methods: {
+    logOut() {
+      firebase
+        .auth()
+        .signOut()
+        .then(() => {
+          this.$router.replace("/")
+        })
+    }
+  }
+}
+</script>
