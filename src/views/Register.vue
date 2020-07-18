@@ -23,8 +23,12 @@ export default {
   data() {
     return {
       email: '',
-      password: '',
-      error: null
+      password: ''
+    }
+  },
+  computed: {
+    error() {
+      return this.$store.state.registerError;
     }
   },
   methods: {

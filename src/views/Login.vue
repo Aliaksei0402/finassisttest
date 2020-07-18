@@ -8,7 +8,7 @@
       <b-field label="Password">
         <b-input type="password" password-reveal v-model="password" />
       </b-field>
-      <b-message type="is-danger" v-if="error">{{ error }}</b-message>
+      <b-message type="is-danger" v-if="error">{{ error.message }}</b-message>
       <b-message has-icon icon="account">
         <router-link to="/register">Register</router-link>
       </b-message>
@@ -27,16 +27,17 @@ export default {
     nextRoute() {
       return this.$route.query.redirect || "/profile";
     },
+    error() {
+      return this.$store.state.loginError;
+    }
   },
   data() {
     return {
       email: '',
-      password: '',
-      error: null
+      password: ''
     }
   },
   watch: {
-    
     user: function (changedUser) {
       if (changedUser) {
         this.$router.replace(this.nextRoute);
