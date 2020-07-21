@@ -1,18 +1,26 @@
 <template>
   <div class="form">
-    <h1 class="title">Register</h1>
+    <h1 class="title">Регистрация</h1>
     <div class="tile is-vertical is-4">
-      <b-field label="Email">
-        <b-input icon="email" type="email" v-model="email" />
+      <b-field>
+        <b-input type="email" placeholder="E-mail" v-model="email" />
       </b-field>
-      <b-field label="Password">
-        <b-input type="password" password-reveal v-model="password" />
+      <b-field>
+        <b-input type="password" placeholder="Пароль" password-reveal v-model="password" />
       </b-field>
-      <b-message type="is-danger" v-if="error">{{ error }}</b-message>
-      <b-message has-icon icon="account">
-        <router-link to="/">I have an account</router-link>
+      <b-field>
+        <b-input
+          type="password"
+          placeholder="Подтверждение пароля"
+          password-reveal
+          v-model="passwordCheck"
+        />
+      </b-field>
+      <b-message type="is-danger" v-if="error || errorPass">{{ error || errorPass }}</b-message>
+      <b-button class="is-primary" @click="register()">Зарегистрироваться</b-button>
+      <b-message>
+        <router-link to="/">У меня уже есть аккаунт</router-link>
       </b-message>
-      <b-button class="is-primary" @click="register()">Register</b-button>
     </div>
   </div>
 </template>
@@ -23,7 +31,9 @@ export default {
   data() {
     return {
       email: '',
-      password: ''
+      password: '',
+      passwordCheck: '',
+      errorPass: null
     }
   },
   computed: {
@@ -33,7 +43,12 @@ export default {
   },
   methods: {
     register() {
-      this.$store.dispatch({ type: "register", email: this.email, password: this.password, error: this.error })
+      if (this.password === this.passwordCheck) {
+        this.$store.dispatch("register", { email: this.email, password: this.password, error: this.error })
+        this.$router.replace("/");      }
+      else {
+        this.errorPass = "Неверно введен пароль подтверждения"
+      }
     }
   }
 }

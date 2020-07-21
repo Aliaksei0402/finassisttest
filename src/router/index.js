@@ -1,9 +1,11 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
-import Login from '../views/Login.vue'
-import store from "@/store"
+import Vue from 'vue';
+import VueRouter from 'vue-router';
+import Login from '../views/Login.vue';
+import Register from '../views/Register.vue';
+import Profile from '../views/Profile.vue';
+import store from "@/store";
 
-Vue.use(VueRouter)
+Vue.use(VueRouter);
 
 const routes = [{
         path: '/',
@@ -13,20 +15,12 @@ const routes = [{
     {
         path: '/register',
         name: 'Register',
-        // route level code-splitting
-        // this generates a separate chunk (about.[hash].js) for this route
-        // which is lazy-loaded when the route is visited.
-        component: () =>
-            import ( /* webpackChunkName: "register" */ '../views/Register.vue')
+        component: Register
     },
     {
         path: '/profile',
         name: 'Profile',
-        // route level code-splitting
-        // this generates a separate chunk (about.[hash].js) for this route
-        // which is lazy-loaded when the route is visited.
-        component: () =>
-            import ( /* webpackChunkName: "profile" */ '../views/Profile.vue'),
+        component: Profile,
         meta: { authRequired: true }
     }
 ];
@@ -37,7 +31,7 @@ const router = new VueRouter({
     routes
 });
 
-router.beforeEach((to, _, next) => {
+router.beforeEach((to, from, next) => {
     if (to.matched.some(routeRecord => routeRecord.meta.authRequired)) {
         if (!store.state.user) {
             next({
@@ -52,4 +46,4 @@ router.beforeEach((to, _, next) => {
     }
 });
 
-export default router
+export default router;

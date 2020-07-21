@@ -1,7 +1,7 @@
 <template>
   <div class="form">
     <p>{{user.email}}</p>
-    <b-button @click="logOut()">Log Out</b-button>
+    <b-button @click="logOut()">Выйти</b-button>
   </div>
 </template>
 
@@ -16,12 +16,8 @@ export default {
   },
   methods: {
     logOut() {
-      firebase
-        .auth()
-        .signOut()
-        .then(() => {
-          this.$router.replace("/")
-        })
+      this.$store.dispatch("logOut");
+      this.$router.replace("/");
     }
   }
 }

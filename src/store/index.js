@@ -1,7 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import * as firebase from "firebase/app"
-import "firebase/auth"
+import * as firebase from "firebase/app";
+import "firebase/auth";
 
 Vue.use(Vuex);
 
@@ -13,7 +13,7 @@ export default new Vuex.Store({
     },
     mutations: {
         updateUser(state, { user }) {
-            Vue.set(state, "user", user);
+            state.user = user;
         },
         loginError(state, error) {
             state.loginError = error
@@ -26,7 +26,7 @@ export default new Vuex.Store({
         user: state => state.user
     },
     actions: {
-        login(ctx, user) {
+        async login(ctx, user) {
             firebase
                 .auth()
                 .signInWithEmailAndPassword(user.email, user.password)
@@ -36,17 +36,22 @@ export default new Vuex.Store({
                     ctx.commit("loginError", error)
                 })
         },
-        register(ctx, user) {
+        async logOut() {
+            firebase
+                .auth()
+                .signOut()
+        },
+        async register(ctx, user) {
             firebase
                 .auth()
                 .createUserWithEmailAndPassword(user.email, user.password)
-                .then(() => { ctx.commit("registerError", null) })
+                .then(() => { ctx.commit("registerError", user.error) })
                 .catch((error) => {
                     user.error = error.message;
                     ctx.commit("registerError", error)
                 })
         },
-        onAuthStateChanged(ctx) {
+        async onAuthStateChanged(ctx) {
             firebase.auth().onAuthStateChanged(user => {
                 ctx.commit("updateUser", { user });
             });

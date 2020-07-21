@@ -1,25 +1,26 @@
 <template>
   <div class="form">
-    <h1 class="title">Login</h1>
+    <h1 class="title">Авторизация</h1>
     <div class="tile is-vertical is-4">
-      <b-field label="Email">
-        <b-input icon="email" type="email" v-model="email" />
+      <b-field>
+        <b-input type="email" placeholder="E-mail" v-model="email" />
       </b-field>
-      <b-field label="Password">
-        <b-input type="password" password-reveal v-model="password" />
+      <b-field>
+        <b-input type="password" placeholder="Пароль" password-reveal v-model="password" />
       </b-field>
       <b-message type="is-danger" v-if="error">{{ error.message }}</b-message>
-      <b-message has-icon icon="account">
-        <router-link to="/register">Register</router-link>
+
+      <b-button class="is-primary" @click="login()">Войти</b-button>
+      <b-message>
+        <router-link to="/register">У меня еще нет аккаунта</router-link>
       </b-message>
-      <b-button class="is-primary" @click="login()">Login</b-button>
     </div>
   </div>
 </template>
 
 <script>
 
-import { mapGetters } from 'vuex'
+import { mapGetters } from 'vuex';
 
 export default {
   computed: {
@@ -46,7 +47,7 @@ export default {
   },
   methods: {
     login() {
-      this.$store.dispatch({ type: "login", email: this.email, password: this.password, error: this.error })
+      this.$store.dispatch("login", { email: this.email, password: this.password, error: this.error })
     }
   }
 }

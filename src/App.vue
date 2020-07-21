@@ -6,7 +6,7 @@
 
 <script>
 export default {
-  beforeMount() {
+  created() {
     this.$store.dispatch("onAuthStateChanged")
   }
 }
